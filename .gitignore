@@ -216,3 +216,6 @@ data/**
 
 ###Ignore logs
 logs/**
+
+#But keep .gitkeep files
+!logs/.gitkeep
