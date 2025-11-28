@@ -201,7 +201,9 @@ def extraer_alarmas_connect(previous_days: int, driver_path: str, credentials_pa
     |   |-- lists_downloaded/
     |   |-- results/
     |   |-- all_stores_list/
+    |-- logs/
     |-- src/
+    |   |-- __init__.py
     |   |-- main_etl.py
     |   |-- main_scraping.py
     |   |-- utils_etl.py
