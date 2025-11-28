@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 import datetime
+import logging
 
 def new_filename(name: str):
     """Generates a new filename based on the current date and time.
@@ -33,7 +34,8 @@ def get_last_two_files(directory: str):
     files.sort(key=os.path.getctime, reverse=True)
 
     #return the last two
-    print('Lists to be use:', files[:2])
+    logging.info("Lists used for diagnostics: %s", files[:2])
+    #print('Lists to be use:', files[:2])
     return files[:2]
 
 
@@ -44,18 +46,18 @@ def online_offline_process(folder_connectplus_downloads_path: str, table_all_sto
     of last connections from the two list and one final column with a final diagnostic. 
     ==========================
     Params:
-    folder_connectplus_downloads_path: str. Path to the folder where the lists downloaded from connection plus are stored.
-    
-    table_all_stores_path: str. Path where the fixed list of all stores considered is stored.
-
-    final_storage_path: Path of the directory where the final results will be stored. 
-
-    N: int. Number of hours withouth activity before download to be considered CommLoss
-
+    folder_connectplus_downloads_path: str. 
+        Path to the folder where the lists downloaded from connection plus are stored.
+    table_all_stores_path: str. 
+        Path where the fixed list of all stores considered is stored.
+    final_storage_path: 
+        Path of the directory where the final results will be stored. 
+    N: int. 
+        Number of hours withouth activity before download to be considered CommLoss
     ========================
     Returns:
-    None.
-    Creates the resulting list in the folder final_storage_path.
+    None. 
+        Creates the resulting list in the folder final_storage_path.
     """
 
     ### gets the paths of the last two lists downloaded in the given directory
@@ -95,6 +97,8 @@ def online_offline_process(folder_connectplus_downloads_path: str, table_all_sto
     ### this could be a small function###
 
     offline_stores1 = list(last_times_df1.isnull().all()[last_times_df1.isnull().all()].index)
+    ###note that it will offline if there are not data at all
+    ##it will categorized a store as online if there are some kind of annotation, even if it is not 'On' or 'Off'
     online_stores1 = [element for element in list(df1.columns) if element not in offline_stores1]
     online_stores1.remove('Time')
 
@@ -141,7 +145,7 @@ def online_offline_process(folder_connectplus_downloads_path: str, table_all_sto
 
     online_list2 = [
         [item.split('/')[0].strip(),
-        item.split('/')[1].strip(),
+         item.split('/')[1].strip(),
         'Online'
     ] for item in online_stores2  ]
 
@@ -208,8 +212,9 @@ def online_offline_process(folder_connectplus_downloads_path: str, table_all_sto
 
     ##### saving an excel file with the results in the provided directory for storage
     name_date = new_filename('diagnostics')
-    result.to_excel(final_storage_path + name_date)
-    print('Succesfully created diagnostics file at:', final_storage_path + name_date)
+    result.to_excel(os.path.join(final_storage_path,name_date))
+    logging.info("Succesfully created diagnostics file at: %s", os.path.join(final_storage_path, name_date))
+    #print('Succesfully created diagnostics file at:', final_storage_path + name_date)
     return None
 
 

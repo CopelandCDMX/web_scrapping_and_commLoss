@@ -1,0 +1,13 @@
+driver:
+  path: "chromedriver-win64/chromedriver.exe"
+
+data:
+  lists_downloaded: "data/lists_downloaded"
+  results: "data/results"
+  all_stores_fixed_list: "data/all_stores_list/EnterpriseSummary_111225_169.xlsx"
+
+credentials: 
+  path: "credentials.txt"
+
+
+  
