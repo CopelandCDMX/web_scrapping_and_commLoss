@@ -210,9 +210,9 @@ __marimo__/
 credentials.txt
 
 ## Ignore all data outputs
-data/*
+data/**
 ##keep .gitkeep files
 !data/**/.gitkeep
 
 ###Ignore logs
-logs/
+logs/**
